@@ -177,3 +177,8 @@ ALTER COLUMN "updated_date" SET DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE "episode" 
 ALTER COLUMN "updated_date" SET DEFAULT CURRENT_TIMESTAMP;
 
+CREATE SEQUENCE movie_id_seq;
+ALTER SEQUENCE movie_id_seq OWNED BY movie.id;
+ALTER TABLE movie ALTER COLUMN id SET DEFAULT nextval('movie_id_seq');
+SELECT setval('movie_id_seq', COALESCE((SELECT MAX(id) FROM movie), 0) + 1, false);
+

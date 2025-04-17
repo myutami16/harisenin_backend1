@@ -1,13 +1,12 @@
 CREATE OR REPLACE FUNCTION soft_delete_function()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'DELETE' THEN
-        UPDATE ONLY TG_TABLE_NAME
-        SET deleted_date = CURRENT_TIMESTAMP
-        WHERE id = OLD.id;
-        RETURN NULL;
-    END IF;
-    RETURN NEW;
+  IF TG_OP = 'DELETE' THEN
+    EXECUTE format('UPDATE ONLY %I SET deleted_date = CURRENT_TIMESTAMP WHERE id = $1', TG_TABLE_NAME)
+    USING OLD.id;
+    RETURN NULL;
+  END IF;
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
