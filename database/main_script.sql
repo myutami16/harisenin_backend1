@@ -182,3 +182,5 @@ ALTER SEQUENCE movie_id_seq OWNED BY movie.id;
 ALTER TABLE movie ALTER COLUMN id SET DEFAULT nextval('movie_id_seq');
 SELECT setval('movie_id_seq', COALESCE((SELECT MAX(id) FROM movie), 0) + 1, false);
 
+ALTER TABLE "movie"
+ADD COLUMN "updated_date" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP;
